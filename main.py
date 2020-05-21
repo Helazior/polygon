@@ -20,7 +20,7 @@ clock = pygame.time.Clock() #initialise une horloge pour gerer le temps et les f
 
 #_________________variables_________________:
 quitter = False	#pour sortir du jeu
-fps = 32 	#modifier le nombre de frame per seconde. Permet d'être plus précis, moins de tremblement, plus stable mais plus lent lorsqu'on l'augmente
+fps = 64 	#modifier le nombre de frame per seconde. Permet d'être plus précis, moins de tremblement, plus stable mais plus lent lorsqu'on l'augmente
 surfaceX = 1830	#taille en pixels de la fenêtre
 surfaceY = 1000
 tailleFenetre = (surfaceX,surfaceY)
@@ -42,11 +42,16 @@ surface_fond = pygame.display.get_surface().copy() #Copy du fond pour effacer la
 
 while quitter == False:
     list_poly = list()
-    list_poly.append(Polygon(400,300, 100, 5, pi/2, (0,255,0), 4, 1,1/2,pi/200)) #x,y,radius, n, tilt, color, width, wx, wy, w
-    list_poly.append(Polygon(1000, 600, 50, 4, 0, (120,120,255), 4, -1,-1/4,pi/400))
-    list_poly.append(Polygon(800, 800, 70, 3, 0, (155,155,155), 4, 1/4,-2,pi/400))
-    list_poly.append(Polygon(900, 300, 700, 2, 2*pi/3, (155,200,100), 4, 0,0, 0))
     
+    list_poly.append(Polygon(800, 500, 100, 3, pi/9, (0,255,0), 4, -2,1,pi/400)) #x,y,radius, n, tilt, color, width, vx, vy, w
+    """
+    list_poly.append(Polygon(1000, 600, 50, 4, pi/6, (120,120,255), 4, -1,-1/4,pi/400))
+    list_poly.append(Polygon(800, 800, 70, 3, pi/8, (155,155,155), 4, 1/4,-2,pi/400))
+    list_poly.append(Polygon(500,300, 100, 4, pi/7, (0,255,0), 4, 0,1/2,0)) #x,y,radius, n, tilt, color, width, wx, wy, w
+    list_poly.append(Polygon(600, 412, 50, 4, pi/5, (120,120,255), 4, 0,-1/4, pi/2000))
+    """
+    
+    list_poly.append(Polygon(800, 540, 500, 5, pi/4, (155,200,100), 4, 0,0, 0))
     draw_regular_polygon(surface, pygame, list_poly)
     pygame.display.flip()#on rafraichit la fenêtre pour afficher les images qui étaient dans le buffer
     replay = False #pour recommencer
@@ -68,7 +73,7 @@ while quitter == False:
             p.deplacement() #on la déplace
             try:
                 #Collision
-                for num_poly in range(num, longueur):#on teste chaque couple qu'une fois
+                for num_poly in range(num, longueur):#on teste chaque couple une fois dans chaque sens
                     #on regarde d'habord si on est dans le rayon du pylogone, avant de faire un algo coûteux pour trouver les collisions.
                     if (p.x - list_poly[num_poly].x)**2 + (p.y - list_poly[num_poly].y)**2 < (p.radius + list_poly[num_poly].radius)**2:#si les polys sont assez proches
                         collision(surface, pygame, p, list_poly[num_poly]) #collision entre 2 polys

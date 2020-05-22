@@ -4,7 +4,7 @@ from math import *
 import numpy as np
 
 a1 = 1
-a2 = 100000
+a2 = 60000
 
 def prod_scal(u,v):
     return sum([x * y for x, y in zip(u, v)])
@@ -44,7 +44,7 @@ class Polygon():
         self.w = [0,0,w*s] #rotation
         self.E = a1 * norm(self.v)**2 + a2 * norm(self.w)**2
         
-        self.friction = .0 #1 = pas de friction; 0 = aucun glissement
+        self.friction = .8 #1 = pas de friction; 0 = aucun glissement
         self.rebond = .9 #1 = aucune perte d'énergie; 0 = aucun rebond
         
 
@@ -206,7 +206,7 @@ def collision(surface, pygame, p, p2):
     turn = sgn(prod_scal(Vm - v, GMo))
     #ou prod_scal(Vm,GMo)
     #print(turn)
-    for i in range(4): #nombre d'itérations
+    for i in range(5): #nombre d'itérations
         """ 
         print("Vg = ", v)
         print("w = ", w)
@@ -220,7 +220,7 @@ def collision(surface, pygame, p, p2):
         w = list(w)
         if a1 * norm(v)**2 > p.E: #Bug lorsque v est trop grand
             print("erreur: trop rapide !")
-            v = v/norm(v)*sqrt(p.E/a1)
+            v = v/(norm(v)+1) * sqrt(p.E/a1)
 
         w[2] = sqrt((p.E - a1 * norm(v)**2) / a2) * turn #on modifie la rotation /v
         w = np.array(w)
